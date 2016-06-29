@@ -1,0 +1,28 @@
+{
+  "name": "mongoose-schema-generator",
+  "authors": [
+    "Hari <me@hsr.co.in>"
+  ],
+  "description": "An internal tool/project for making life easier in creating MongoDB schemas in MongooseJS.",
+  "main": "index.html",
+  "keywords": [
+    "mongoose",
+    "schema",
+    "generator",
+    "mongodb",
+    "experimental"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "v4.0.0-alpha.2"
+  }
+}
