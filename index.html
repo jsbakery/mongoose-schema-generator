@@ -11,22 +11,17 @@
 </head>
 <body>
 <div class="container-fluid">
-    <div class="card">
-        <div class="card-block">
-            <nav class="navbar navbar-light bg-faded">
-                <a class="navbar-brand" href="#">mongoose-schema-generator</a>
-                <div class="pull-xs-right">
-                    <button class="btn btn-primary-outline btn-sm active" id="designCollections">Design</button>
-                    <button class="btn btn-success-outline btn-sm" id="generateSchema">Generate</button>
-                </div>
-            </nav>
+    <nav class="navbar navbar-light bg-faded breadcrumb">
+        <a class="navbar-brand" href="#">mongoose-schema-generator</a>
+        <div class="pull-xs-right">
+            <button class="btn btn-primary-outline btn-sm active" id="designCollections">Design</button>
+            <button class="btn btn-success-outline btn-sm" id="generateSchema">Generate</button>
         </div>
-    </div>
+    </nav>
 </div>
 
-<div class="col-xs-12" id="MSG-collection-renderTarget">
+<div class="col-xs-12 breadcrumb" id="MSG-collection-renderTarget"></div>
 
-</div>
 <section class="hidden-section col-xs-12" id="MSG-DOM-SOURCES">
     <div class="MSG-collection col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
         <div class="card">
@@ -38,9 +33,9 @@
                         class="label label-info MSG-collection-keyType">Type</span></li>
             </ul>
             <div class="card-block">
-                <div class="btn-group MSG-float-right" role="group">
-                    <button class="btn btn-secondary MSG-collection-clone">Clone</button>
-                    <button class="btn btn-danger MSG-collection-delete">Delete</button>
+                <div class="btn-group btn-group-sm MSG-float-right" role="group">
+                    <button class="btn btn-sm btn-secondary MSG-collection-clone">Clone</button>
+                    <button class="btn btn-sm btn-danger MSG-collection-delete">Delete</button>
                 </div>
             </div>
         </div>

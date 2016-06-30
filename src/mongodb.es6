@@ -1,23 +1,32 @@
 var DOMParent = $("#MSG-DOM-SOURCES");
 var RenderTarget = $("#MSG-collection-renderTarget");
+var Selectors = {
+    collection: '.MSG-collection',
+    collectionName: '.MSG-collection-title',
+    collectionKeyList: '.MSG-collection-keyList',
+    collectionKey: '.MSG-collection-key',
+    collectionKeyName: '.MSG-collection-keyName',
+    collectionKeyType: '.MSG-collection-keyType',
+    collectionClone: '.MSG-collection-clone',
+    collectionDelete: '.MSG-collection-delete'
+};
+var RefreshCollections = () => {
+    var deleteButtons;
+    deleteButtons = RenderTarget.find(Selectors.collectionDelete);
+    if (deleteButtons.length == 1) {
+        deleteButtons.prop("disabled", true);
+    } else {
+        deleteButtons.prop("disabled", false);
+    }
+};
 class Collection {
     constructor(name) {
-        var selectors = {
-            collection: '.MSG-collection',
-            collectionName: '.MSG-collection-title',
-            collectionKeyList: '.MSG-collection-keyList',
-            collectionKey: '.MSG-collection-key',
-            collectionKeyName: '.MSG-collection-keyName',
-            collectionKeyType: '.MSG-collection-keyType',
-            collectionClone: '.MSG-collection-clone',
-            collectionDelete: '.MSG-collection-key'
-        };
         this._config = {
-            selectors: selectors
+            selectors: Selectors
         };
-        this.__collection = DOMParent.find(selectors.collection).clone();
-        this.__collectionKey = DOMParent.find(selectors.collectionKey).clone();
-        this.__collection.find(selectors.collectionKey).remove();
+        this.__collection = DOMParent.find(Selectors.collection).clone();
+        this.__collectionKey = DOMParent.find(Selectors.collectionKey).clone();
+        this.__collection.find(Selectors.collectionKey).remove();
         this.name(name);
     }
 
@@ -45,6 +54,7 @@ class Collection {
 
     appendTo(target) {
         this.__collection.appendTo(target);
+        this.__target = target;
         return this;
     }
 
@@ -57,6 +67,14 @@ class Collection {
             retValue = this.dom.collectionName.html();
         }
         return retValue;
+    }
+
+    copy(fromCollection) {
+        this.name(fromCollection.name());
+        this.__collection.remove();
+        this.__collection = fromCollection.__collection.clone();
+        this.__collection.appendTo(fromCollection.__target);
+        return this;
     }
 }
 
@@ -74,15 +92,45 @@ class Schema {
             },
             collection = new Collection(collectionName);
 
+        this.Name = collectionName;
         this.Types = Object.assign({arrayOf: {}}, types);
+        this.collection = collection;
+
         Object.keys(types).forEach(type => {
             if (type !== "Array") {
                 this.Types.arrayOf[type] = `[${types[type]}]`;
             }
         });
-
         collection.addKey("_id", types.ObjectId).appendTo(RenderTarget);
-        this.collection = collection;
+        collection.dom.collectionClone.off("click").on("click", () => this.clone());
+        collection.dom.collectionDelete.off("click").on("click", () => this.remove());
+        RefreshCollections();
+    }
+
+    clone() {
+        var newSchema = new Schema(this.Name);
+        newSchema.collection.copy(this.collection);
+        newSchema.collection.dom.collectionClone.off("click").on("click", () => newSchema.clone());
+        newSchema.collection.dom.collectionDelete.off("click").on("click", () => newSchema.remove());
+        RefreshCollections();
+        return newSchema;
+    }
+
+    name(optionalName) {
+        var retVal;
+        if (optionalName) {
+            this.name = optionalName;
+            this.collection.name(optionalName);
+            retVal = this;
+        } else {
+            retVal = this.name;
+        }
+        return retVal;
+    }
+
+    remove() {
+        this.collection.__collection.remove();
+        RefreshCollections();
     }
 }
 
