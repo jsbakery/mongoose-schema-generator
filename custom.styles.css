@@ -1,3 +1,11 @@
 body {
     padding-top: 24px;
 }
+
+.hidden-section {
+    visibility: hidden;
+}
+
+.MSG-float-right {
+    float: right;
+}

@@ -1,4 +1,5 @@
 import {appName} from './config.es6';
+import {Schema} from './mongodb.es6';
 
 class mongooseSchemaGenerator {
     constructor(name){
@@ -7,6 +8,7 @@ class mongooseSchemaGenerator {
     }
     start(){
         console.info(["Start:", this.appName, this.version].join(" "));
+        new Schema("Default Collection");
     }
 }
 
